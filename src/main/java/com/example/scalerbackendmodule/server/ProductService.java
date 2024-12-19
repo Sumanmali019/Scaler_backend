@@ -9,6 +9,7 @@ public interface ProductService {
 
     List<Products> getAllProducts();
 
-    Products createProduct(Products producer);
+    Products createProduct(
+            Long id, String title, String description, Double price, String category, String imgurl);
 
 }

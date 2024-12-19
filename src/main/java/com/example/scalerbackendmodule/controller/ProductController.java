@@ -3,6 +3,7 @@ package com.example.scalerbackendmodule.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.scalerbackendmodule.models.Products;
@@ -25,16 +26,24 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public void createProducts(Products product) {
+    public Products createProducts(@RequestBody Products product) {
+        return productService.createProduct(
+                product.getId(),
+                product.getTitle(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getCategory().getTitle(),
+                product.getImageUrl());
 
     }
 
     // This is get the products
     @GetMapping("/products/{id}")
     public Products getProducts(@PathVariable("id") Long id) {
-        productService.getSingleProduct(id);
-
-        return null;
+        System.out.println("String of API...");
+        Products p = productService.getSingleProduct(id);
+        System.out.println("Ending of API...");
+        return p;
     }
 
     // This will help update product
