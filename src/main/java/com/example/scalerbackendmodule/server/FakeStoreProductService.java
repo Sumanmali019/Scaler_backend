@@ -1,11 +1,11 @@
 package com.example.scalerbackendmodule.server;
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.scalerbackendmodule.dto.FakeStoreProductDto;
+import com.example.scalerbackendmodule.exception.ProductNotFoundException;
 import com.example.scalerbackendmodule.models.Products;
 
 @Service
@@ -17,13 +17,16 @@ public class FakeStoreProductService implements ProductService {
         this.restTemplate = restTemplate;
     }
 
-    public Products getSingleProduct(Long id) {
-        System.out.println("Inside FK product service");
+    public Products getSingleProduct(Long id) throws ProductNotFoundException {
+        System.out.println("Inside FaKestoew product service");
         FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/" + id,
                 FakeStoreProductDto.class);
 
-        System.out.println(fakeStoreProductDto.getProduct());
+        if (fakeStoreProductDto == null) {
+            throw new ProductNotFoundException("Product not found with id " + id);
+        }
+
         return fakeStoreProductDto.getProduct();
     }
 

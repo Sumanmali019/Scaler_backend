@@ -1,13 +1,13 @@
 package com.example.scalerbackendmodule.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.example.scalerbackendmodule.dto.ErrorDto;
+import com.example.scalerbackendmodule.exception.ProductNotFoundException;
 import com.example.scalerbackendmodule.models.Products;
 import com.example.scalerbackendmodule.server.ProductService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
@@ -39,11 +39,14 @@ public class ProductController {
 
     // This is get the products
     @GetMapping("/products/{id}")
-    public Products getProducts(@PathVariable("id") Long id) {
-        System.out.println("String of API...");
-        Products p = productService.getSingleProduct(id);
-        System.out.println("Ending of API...");
-        return p;
+    public ResponseEntity<Products> getProductsbyId(@PathVariable("id") Long id) throws ProductNotFoundException {
+        System.out.println("Starting API call to get product by ID...");
+        Products product = productService.getSingleProduct(id);
+        System.out.println("API call completed successfully.");
+        ResponseEntity<Products> responseEntity = new ResponseEntity<>(
+                product, HttpStatus.OK);
+
+        return responseEntity;
     }
 
     // This will help update product
@@ -55,4 +58,15 @@ public class ProductController {
     public void deleteProducts(Products product) {
 
     }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleProductNotFoundException(Exception e) {
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage(e.getMessage());
+
+        ResponseEntity<ErrorDto> responseEntity = new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+
+        return responseEntity;
+    }
+
 }
