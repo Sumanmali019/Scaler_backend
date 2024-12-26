@@ -5,6 +5,7 @@ import com.example.scalerbackendmodule.exception.ProductNotFoundException;
 import com.example.scalerbackendmodule.models.Products;
 import com.example.scalerbackendmodule.server.ProductService;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,19 +22,22 @@ public class ProductController {
 
     private ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(@Qualifier("selfproductservice") ProductService productService) {
         this.productService = productService;
     }
 
     @PostMapping("/products")
     public Products createProducts(@RequestBody Products product) {
-        return productService.createProduct(
+        Products products = productService.createProduct(
                 product.getId(),
                 product.getTitle(),
                 product.getDescription(),
                 product.getPrice(),
-                product.getCategory().getTitle(),
-                product.getImageUrl());
+                product.getCategory().getTitle()
+        // product.getImageUrl());
+        );
+
+        return products;
 
     }
 

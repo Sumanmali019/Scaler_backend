@@ -11,10 +11,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Products extends BaseModel{
+@Entity
+public class Products extends BaseModel {
     private String title;
     private String description;
     private Double price;

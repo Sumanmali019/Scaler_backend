@@ -1,10 +1,12 @@
 package com.example.scalerbackendmodule.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.scalerbackendmodule.models.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Category findByTitle(String title);
+    Optional<Category> findByTitle(String title);
 
 }

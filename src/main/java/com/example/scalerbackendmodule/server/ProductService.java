@@ -11,6 +11,6 @@ public interface ProductService {
     List<Products> getAllProducts();
 
     Products createProduct(
-            Long id, String title, String description, Double price, String category, String imgurl);
+            Long id, String title, String description, Double price, String category);
 
 }

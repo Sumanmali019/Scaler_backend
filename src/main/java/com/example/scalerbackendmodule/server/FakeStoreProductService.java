@@ -1,4 +1,5 @@
 package com.example.scalerbackendmodule.server;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +9,7 @@ import com.example.scalerbackendmodule.dto.FakeStoreProductDto;
 import com.example.scalerbackendmodule.exception.ProductNotFoundException;
 import com.example.scalerbackendmodule.models.Products;
 
-@Service
+@Service("fakestoreproductservice")
 public class FakeStoreProductService implements ProductService {
 
     private RestTemplate restTemplate;
@@ -35,15 +36,14 @@ public class FakeStoreProductService implements ProductService {
         return List.of();
     }
 
-    public Products createProduct(Long id, String title, String description, Double price, String category,
-            String image) {
+    public Products createProduct(Long id, String title, String description, Double price, String category) {
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
         fakeStoreProductDto.setId(id);
         fakeStoreProductDto.setTitle(title);
         fakeStoreProductDto.setPrice(price);
         fakeStoreProductDto.setCategory(category);
         fakeStoreProductDto.setDescription(description);
-        fakeStoreProductDto.setImage(image);
+        // fakeStoreProductDto.setImage(image);
 
         FakeStoreProductDto response = restTemplate.postForObject(
                 "https://fakestoreapi.com/products",
