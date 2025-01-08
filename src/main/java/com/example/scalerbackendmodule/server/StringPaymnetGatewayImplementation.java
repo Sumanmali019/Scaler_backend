@@ -34,6 +34,14 @@ public class StringPaymnetGatewayImplementation implements PaymentService {
                                 .setPrice(price.getId())
                                 .setQuantity(1L)
                                 .build())
+                .setAfterCompletion(
+                        PaymentLinkCreateParams.AfterCompletion.builder()
+                                .setType(PaymentLinkCreateParams.AfterCompletion.Type.REDIRECT)
+                                .setRedirect(
+                                        PaymentLinkCreateParams.AfterCompletion.Redirect.builder()
+                                                .setUrl("https://google.com")
+                                                .build())
+                                .build())
                 .build();
 
         PaymentLink paymentLink = PaymentLink.create(Linkparams);

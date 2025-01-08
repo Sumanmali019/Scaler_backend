@@ -19,11 +19,17 @@ public class PaymentController {
     this.paymentService = paymentService;
   }
 
-  @PostMapping("/patment")
+  @PostMapping("/payment")
   public ResponseEntity<String> createPaymentLink(@RequestBody PaymentGatwayDTO paymentGatwayDTO)
       throws StripeException {
     String paymnetlink = paymentService.makePaymnet(paymentGatwayDTO.getOrderId(), paymentGatwayDTO.getAmount());
     return new ResponseEntity<>(paymnetlink, HttpStatus.OK);
 
+  }
+
+  @PostMapping("/webhook")
+  public void handleStripeWebhook() {
+    System.out.println("Webhook received: ");
+    return;
   }
 }
