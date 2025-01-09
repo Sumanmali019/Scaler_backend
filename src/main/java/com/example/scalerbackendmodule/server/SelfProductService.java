@@ -73,4 +73,46 @@ public class SelfProductService implements ProductService {
         return saveproducts;
     }
 
+    @Override
+    public Products updateSingleProduct(Long id, String title, String description, Double price, String categoryTitle)
+            throws ProductNotFoundException {
+        // Check if the product exists
+        Optional<Products> optionalProduct = productRepository.findById(id);
+        if (!optionalProduct.isPresent()) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+
+        // Get the existing product
+        Products product = optionalProduct.get();
+
+        // Update product details
+        product.setTitle(title);
+        product.setDescription(description);
+        product.setPrice(price);
+
+        // Check if the category exists
+        Optional<Category> optionalCategory = categoryRepository.findByTitle(categoryTitle);
+        if (optionalCategory.isPresent()) {
+            product.setCategory(optionalCategory.get());
+        } else {
+            // Create a new category if it does not exist
+            Category newCategory = new Category();
+            newCategory.setTitle(categoryTitle);
+            Category savedCategory = categoryRepository.save(newCategory);
+            product.setCategory(savedCategory);
+        }
+
+        // Save the updated product
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProductById(Long id) throws ProductNotFoundException {
+        Optional<Products> optionalProduct = productRepository.findById(id);
+        if (!optionalProduct.isPresent()) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        productRepository.delete(optionalProduct.get());
+    }
+
 }

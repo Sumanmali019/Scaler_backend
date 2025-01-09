@@ -21,4 +21,6 @@ public class Products extends BaseModel {
     private String imageUrl;
     @ManyToOne
     private Category category;
+
+    
 }

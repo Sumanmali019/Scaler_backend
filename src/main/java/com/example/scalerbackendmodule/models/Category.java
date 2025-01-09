@@ -2,6 +2,8 @@ package com.example.scalerbackendmodule.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -20,6 +22,7 @@ import lombok.ToString;
 public class Category extends BaseModel {
     private String title;
 
-    @OneToMany(mappedBy = "category", fetch =  FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Products> products;
 }

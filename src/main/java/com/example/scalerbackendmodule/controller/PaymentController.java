@@ -30,6 +30,6 @@ public class PaymentController {
   @PostMapping("/webhook")
   public void handleStripeWebhook() {
     System.out.println("Webhook received: ");
-    return;
+
   }
 }

@@ -53,4 +53,37 @@ public class FakeStoreProductService implements ProductService {
         return response.getProduct();
     }
 
+    @Override
+    public Products updateSingleProduct(Long id, String title, String description, Double price, String category)
+            throws ProductNotFoundException {
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setId(id);
+        fakeStoreProductDto.setTitle(title);
+        fakeStoreProductDto.setPrice(price);
+        fakeStoreProductDto.setCategory(category);
+        fakeStoreProductDto.setDescription(description);
+
+        restTemplate.put("https://fakestoreapi.com/products/" + id, fakeStoreProductDto);
+
+        FakeStoreProductDto updatedProductDto = restTemplate.getForObject(
+                "https://fakestoreapi.com/products/" + id,
+                FakeStoreProductDto.class);
+
+        if (updatedProductDto == null) {
+            throw new ProductNotFoundException("Product not found with id " + id);
+        }
+
+        return updatedProductDto.getProduct();
+    }
+
+    @Override
+    public void deleteProductById(Long id) throws ProductNotFoundException {
+        try {
+            restTemplate.delete("https://fakestoreapi.com/products/" + id);
+            System.out.println("Product with ID " + id + " deleted successfully.");
+        } catch (Exception e) {
+            throw new ProductNotFoundException("Product not found with id " + id);
+        }
+    }
+
 }

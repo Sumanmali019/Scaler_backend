@@ -54,13 +54,30 @@ public class ProductController {
     }
 
     // This will help update product
-    public void updateProducts(Products product) {
+    @PutMapping("/products/{id}")
+    public ResponseEntity<Products> updateProducts(@PathVariable("id") Long id, @RequestBody Products product)
+            throws ProductNotFoundException {
+        Products updatedProduct = productService.updateSingleProduct(
+                id,
+                product.getTitle(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getCategory().getTitle());
 
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
     // This will help delete product
-    public void deleteProducts(Products product) {
-
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<String> deleteProductById(@PathVariable("id") Long id) {
+        try {
+            productService.deleteProductById(id);
+            return new ResponseEntity<>("Product deleted successfully.", HttpStatus.OK);
+        } catch (ProductNotFoundException e) {
+            return new ResponseEntity<>("Product not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
